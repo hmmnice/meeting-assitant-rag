@@ -16,19 +16,20 @@ The system allows users to:
 * Record screen/system audio and microphone audio for online meetings.
 * Upload pre-recorded audio files.
 * Transcribe meetings using WhisperX.
-* Identify speakers using diarization.
+* Identify speakers using speaker diarization.
 * Generate structured meeting summaries.
 * Store transcripts, summaries, embeddings, and chat history in SQLite.
 * Ask questions about a selected meeting using a RAG chatbot.
 * Retrieve relevant meeting chunks using hybrid FAISS + BM25 retrieval.
+* Use a locally hosted open-weight LLM for summarization and question answering.
+
+During development, a custom fine-tuned model was initially explored for summarization and question answering. However, after testing its output quality and considering the available compute resources, the final system was redesigned to use an open-weight instruction-tuned model instead. This improved response quality, reduced development complexity, and made the NLP pipeline more reliable for both meeting summarization and RAG-based question answering.
 
 ---
 
 ## Demo
 
-> Add a short GIF here showing: recording/upload → transcript generation → summary view → chatbot query.
-
-![Demo](docs/demo/demo.gif)
+![Demo](assets/demo_6x.gif)
 
 ---
 
@@ -36,11 +37,11 @@ The system allows users to:
 
 ### Recording and upload interface
 
-![Recording page](docs/images/recording-page.png)
+![Recording page](assets/recording_page.png)
 
 ### Meeting transcript, summary, and chatbot interface
 
-![Chat interface](docs/images/chat-page.png)
+![Chat interface](assets/chat_page.png)
 
 ---
 
@@ -146,6 +147,15 @@ The system stores:
 * Chat history
 
 This allows users to return to previous meetings and continue asking questions about them.
+
+## Model Selection
+
+The NLP pipeline originally explored fine-tuning a smaller transformer-based model for meeting summarization and question answering. However, the fine-tuned model did not provide a strong enough improvement for the project’s use case, especially when compared with modern open-weight instruction-tuned models.
+
+The final implementation therefore uses **LLaMA 3.2 3B Instruct** as the main language model. This model was selected because it provides a better balance between output quality, instruction-following ability, and local hardware requirements. It is used for both summarization and chatbot response generation, meaning the model only needs to be loaded once during execution.
+
+To make local inference more practical, the model is loaded using quantization, reducing memory usage while still keeping the output quality suitable for the application.
+
 
 ---
 
