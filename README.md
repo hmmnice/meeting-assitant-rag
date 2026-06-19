@@ -360,14 +360,6 @@ The goal of this project is to reduce cognitive load during meetings by allowing
 
 ---
 
-## Author
-
-Yash Bhatia
-BSc Computer Science
-Lancaster University
-
----
-
 ## Disclaimer
 
 This project is a research prototype. It is not intended for use with sensitive or confidential recordings without proper consent, privacy safeguards, and secure deployment practices.
